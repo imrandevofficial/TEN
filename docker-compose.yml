@@ -1,14 +1,14 @@
 services:
-  ten_agent_dev:
+  gsm_agent_dev:
     image: ghcr.io/ten-framework/ten_agent_build:0.5.0
-    container_name: ten_agent_dev
+    container_name: gsm_agent_dev
     platform: linux/amd64
     tty: true
     stdin_open: true
     restart: always
     ports:
       - "${GRAPH_DESIGNER_SERVER_PORT}:${GRAPH_DESIGNER_SERVER_PORT}"
-      - "${SERVER_PORT}:${SERVER_PORT}"
+      - "8088:8086"
     volumes:
       - ./:/app
       - ${LOG_PATH}:${LOG_PATH}
@@ -16,38 +16,38 @@ services:
     env_file:
       - .env
     networks:
-      - ten_agent_network
-  ten_agent_playground:
+      - gsm_agent_network
+  gsm_agent_playground:
     image: ghcr.io/ten-framework/ten_agent_playground:0.8.0-147-g15052ec
-    container_name: ten_agent_playground
+    container_name: gsm_agent_playground
     restart: always
     ports:
-      - "3000:3000"
+      - "3018:3000"
     networks:
-      - ten_agent_network
+      - gsm_agent_network
     environment:
-      - AGENT_SERVER_URL=http://ten_agent_dev:8086
-      - TEN_DEV_SERVER_URL=http://ten_agent_dev:49483
-  ten_agent_demo:
+      - AGENT_SERVER_URL=http://gsm_agent_dev:8086
+      - TEN_DEV_SERVER_URL=http://gsm_agent_dev:49483
+  gsm_agent_demo:
     image: ghcr.io/ten-framework/ten_agent_demo:0.8.0-34-gfc5b116
-    container_name: ten_agent_demo
+    container_name: gsm_agent_demo
     restart: always
     ports:
-      - "3002:3000"
+      - "3019:3000"
     networks:
-      - ten_agent_network
+      - gsm_agent_network
     environment:
-      - AGENT_SERVER_URL=http://ten_agent_dev:8086
-  # ten_graph_designer:
+      - AGENT_SERVER_URL=http://gsm_agent_dev:8086
+  # gsm_graph_designer:
   #   image: ghcr.io/ten-framework/ten_graph_designer:4cc33b8
-  #   container_name: ten_graph_designer
+  #   container_name: gsm_graph_designer
   #   restart: always
   #   ports:
   #     - "3001:3000"
   #   networks:
-  #     - ten_agent_network
+  #     - gsm_agent_network
   #   environment:
-  #     - TEN_DEV_SERVER_URL=http://ten_agent_dev:49483
+  #     - TEN_DEV_SERVER_URL=http://gsm_agent_dev:49483
 networks:
-  ten_agent_network:
+  gsm_agent_network:
     driver: bridge
