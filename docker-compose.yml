@@ -10,8 +10,7 @@ services:
       - "${GRAPH_DESIGNER_SERVER_PORT}:${GRAPH_DESIGNER_SERVER_PORT}"
       - "8088:8086"
     volumes:
-      - ./:/app
-      - ${LOG_PATH}:${LOG_PATH}
+      - gsm_agent_data:/app
     working_dir: /app
     env_file:
       - .env
@@ -48,6 +47,10 @@ services:
   #     - gsm_agent_network
   #   environment:
   #     - TEN_DEV_SERVER_URL=http://gsm_agent_dev:49483
+
+volumes:
+  gsm_agent_data:
+
 networks:
   gsm_agent_network:
     driver: bridge
